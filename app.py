@@ -1,5 +1,3 @@
-
-
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -308,7 +306,7 @@ with tab2:
             return f"background-color: rgb({r},{g},{b}); color: white; font-weight: bold"
         except Exception:
             return ""
-    st.dataframe(sens_df.style.applymap(_color_sens), use_container_width=True)
+    st.dataframe(sens_df.style.map(_color_sens), use_container_width=True)
     st.caption(f"PV module price (€/Wp) in {2025 + years_ahead} for different learning rate and deployment growth combinations. Darker = cheaper.")
 
 # ══════════════════ TAB 3 – LCOE / LCOS ══════════════════════════════════════
@@ -464,7 +462,7 @@ with tab4:
             return f"background-color: rgb({r},{g},60); color: white; font-weight: bold"
         except Exception:
             return ""
-    st.dataframe(display_df.style.applymap(_color_lcoe, subset=lcoe_cols), use_container_width=True)
+    st.dataframe(display_df.style.map(_color_lcoe, subset=lcoe_cols), use_container_width=True)
 
     st.markdown("---")
     st.markdown(f"""
