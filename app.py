@@ -496,6 +496,3 @@ Tanmoy Acharya · LUT University ·
 Data sources: ITRPV (2019), Schmidt et al. (2017 — Nature Energy), Breyer (2026), Keiner & Breyer et al. (2026)
 </div>
 """, unsafe_allow_html=True)
-```
-
-Save this as `streamlit_app.py` and run with `streamlit run streamlit_app.py`.
