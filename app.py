@@ -70,19 +70,17 @@ BAT_HIST = pd.DataFrame({
 with st.sidebar:
     st.markdown("## ☀️ Learning Curve Explorer")
     st.markdown("---")
-    mode = st.radio("Select Technology", ["☀️ Solar PV", "🔋 Lithium Battery", "🔗 Combined View"])
-    st.markdown("---")
     st.markdown("### Simulation Parameters")
 
-    if "PV" in mode or "Combined" in mode:
-        lr_pv = st.slider("PV Learning Rate (%)", 10, 50, 23, 1,
-                          help="Historical range: 19–40%. Default is long-run average (23%)")
-        ref_price_pv = st.number_input("PV Ref. Price today (USD/Wp)", 0.01, 5.0, 0.08, 0.01)
+    st.markdown("**Solar PV**")
+    lr_pv = st.slider("PV Learning Rate (%)", 10, 50, 23, 1,
+                      help="Historical range: 19–40%. Default is long-run average (23%)")
+    ref_price_pv = st.number_input("PV Ref. Price today (USD/Wp)", 0.01, 5.0, 0.08, 0.01)
 
-    if "Battery" in mode or "Combined" in mode:
-        lr_bat = st.slider("Battery Learning Rate (%)", 5, 35, 15, 1,
-                           help="Industry estimates: 12–20%. Default 15%.")
-        ref_price_bat = st.number_input("Battery Ref. Price today (€/kWh)", 50, 500, 110, 10)
+    st.markdown("**Lithium Battery**")
+    lr_bat = st.slider("Battery Learning Rate (%)", 5, 35, 15, 1,
+                       help="Industry estimates: 12–20%. Default 15%.")
+    ref_price_bat = st.number_input("Battery Ref. Price today (€/kWh)", 50, 500, 110, 10)
 
     st.markdown("---")
     cum_start_pv  = st.number_input("Current Cum. PV (GW)", 500, 2000, 600, 50)
