@@ -279,7 +279,18 @@ with tab2:
             row[f"{gr_s}% growth"] = round(p[-1], 3)
         rows[f"LR={lr_s}%"] = row
     sens_df = pd.DataFrame(rows).T
-    st.dataframe(sens_df.style.background_gradient(cmap="YlOrRd_r", axis=None), use_container_width=True)
+    def _color_sens(val):
+        try:
+            vmin = sens_df.values.min()
+            vmax = sens_df.values.max()
+            ratio = (float(val) - vmin) / (vmax - vmin + 1e-9)
+            r = int(220 * ratio + 60 * (1 - ratio))
+            g = int(60 * ratio + 180 * (1 - ratio))
+            b = 60
+            return f"background-color: rgb({r},{g},{b}); color: white; font-weight: bold"
+        except Exception:
+            return ""
+    st.dataframe(sens_df.style.applymap(_color_sens), use_container_width=True)
     st.caption(f"PV module price (USD/Wp) in {2025 + years_ahead} for different learning rate and deployment growth combinations. Darker = cheaper.")
 
 # ══════════════════ TAB 3 – LCOE / LCOS ══════════════════════════════════════
@@ -418,18 +429,28 @@ with tab4:
     st.plotly_chart(fig_sun, use_container_width=True)
 
     # Show the data table
-    st.dataframe(
+    # Show the data table
+    display_df = (
         regions[["Region", "Type", "Irradiance_kWh", "LCOE_now", "LCOE_future"]]
         .rename(columns={
             "Irradiance_kWh": "Irradiance (kWh/m²/yr)",
-            "LCOE_now": f"LCOE now (€ct/kWh)",
-            "LCOE_future": f"LCOE {2025+years_ahead} (€ct/kWh)"
+            "LCOE_now": "LCOE now (€t/kWh)",
+            "LCOE_future": f"LCOE {2025+years_ahead} (€t/kWh)"
         })
         .set_index("Region")
-        .style.background_gradient(subset=[f"LCOE now (€ct/kWh)", f"LCOE {2025+years_ahead} (€ct/kWh)"],
-                                    cmap="RdYlGn_r"),
-        use_container_width=True
     )
+    lcoe_cols = ["LCOE now (€t/kWh)", f"LCOE {2025+years_ahead} (€t/kWh)"]
+    _vmin_l = display_df[lcoe_cols].values.min()
+    _vmax_l = display_df[lcoe_cols].values.max()
+    def _color_lcoe(val):
+        try:
+            ratio = (float(val) - _vmin_l) / (_vmax_l - _vmin_l + 1e-9)
+            r = int(200 * ratio + 60 * (1 - ratio))
+            g = int(60 * ratio + 180 * (1 - ratio))
+            return f"background-color: rgb({r},{g},60); color: white; font-weight: bold"
+        except Exception:
+            return ""
+    st.dataframe(display_df.style.applymap(_color_lcoe, subset=lcoe_cols), use_container_width=True)
 
     st.markdown("---")
     st.markdown(f"""
