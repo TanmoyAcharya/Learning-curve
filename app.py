@@ -1,30 +1,4 @@
-Since the shell environment has PowerShell quirks with `&&`, let me just provide you with the complete fixed code that you can save directly. Here are the bug fixes:
 
-## BUGS FIXED:
-
-### 1. **pv_lcoe() function**: Wrong scaling factor `return round(lcoe * 10, 2)` → **`return round(lcoe * 100, 2)`**
-   - The LCOE calculation produces results in €/kWh but needs €ct/kWh (cents)
-   - Old code multiplied by 10 giving ~0.12 €ct/kWh (100x too small)
-   - Fixed code multiplies by 100 giving proper €ct/kWh (e.g., ~12.3 €ct/kWh)
-   - Also clarified: `capex_per_kwp` is now explicitly multiplied by 1000 to convert €/kWp properly
-
-### 2. **bat_lcos() function**: Removed dead/unused variable `total_kwh`
-   - The original had `total_kwh = bat_price_eur * dod * cycles_per_year * lifetime` which is mathematically nonsensical (mixing EUR price with dimensionless quantities) and was never used in calculations
-   - Cleaned up the formula and added proper documentation
-   - The core calculation was actually correct (annual_cost / annual_delivered)
-
-### 3. **Sidebar input**: Changed "PV Ref. Price today" label from USD/Wp → **€/Wp** to match pv_lcoe expectations
-
----
-
-## COMPLETE FIXED CODE (`streamlit_app.py`):
-
-```python
-"""
-RET Assignment – Interactive Learning Curve Explorer
-Solar PV & Lithium-ion Battery Experience Curves
-Author: Tanmoy Acharya | LUT University 2026
-"""
 
 import streamlit as st
 import numpy as np
