@@ -319,7 +319,7 @@ with tab3:
         st.markdown("#### Solar PV LCOE")
         irr_slider = st.slider("Solar irradiation (kWh/m²/yr)", 800, 2500, 1800, 50,
                                help="Europe~1200, MENA/Sunbelt~1800-2500")
-        wacc_pv = st.slider("WACC (%)", 2, 15, 6, 1)
+        wacc_pv = st.slider("WACC (%)", 2, 15, 6, 1, key="pv_wacc")
         bos_frac = st.slider("BoS fraction of total system cost", 0.3, 0.8, 0.6, 0.05,
                              help="Balance-of-system (inverter, mounting, wiring, installation)")
         years_pv_sys = st.slider("System lifetime (years)", 20, 35, 25, 1)
@@ -351,7 +351,7 @@ with tab3:
         st.markdown("#### Battery LCOS (daily cycling)")
         cycles_yr = st.slider("Cycles per year", 200, 365, 365, 5)
         lifetime_bat_yr = st.slider("Battery lifetime (years)", 10, 25, 20, 1)
-        wacc_bat = st.slider("WACC (%)", 2, 15, 6, 1)
+        wacc_bat = st.slider("WACC (%)", 2, 15, 6, 1, key="bat_wacc")
         dod = st.slider("Depth of discharge", 0.7, 0.95, 0.85, 0.05)
 
         lcos_now  = bat_lcos(ref_price_bat, cycles_yr, lifetime_bat_yr, wacc_bat/100, 0.93, dod)
